@@ -197,3 +197,13 @@ Mutant::Meta::Example.add :block do
   mutation 'self.baz { }'
   mutation 'foo(nil, &:bar).baz'
 end
+
+Mutant::Meta::Example.add :block do
+  source 'loop { true }'
+
+  singleton_mutations
+  mutation 'true'
+  mutation 'loop { false }'
+  mutation 'loop { raise }'
+  mutation 'loop'
+end
