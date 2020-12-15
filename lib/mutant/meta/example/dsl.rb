@@ -82,6 +82,14 @@ module Mutant
           mutation('self')
         end
 
+        # Add regexp mutations
+        #
+        # @return [undefined]
+        def regexp_mutations
+          mutation('//')
+          mutation('/nomatch\A/')
+        end
+
         def node(input)
           case input
           when String

@@ -1,3 +1,7 @@
+# Unreleased
+
+* Reintroduce regexp mutation support [#TODO]
+
 # v0.10.20 2020-12-16
 
   [#1159](https://github.com/mbj/mutant/pull/1159)

@@ -36,6 +36,7 @@ Gem::Specification.new do |gem|
   gem.add_runtime_dependency('procto',        '~> 0.0.2')
   gem.add_runtime_dependency('unparser',      '~> 0.5.4')
   gem.add_runtime_dependency('variable',      '~> 0.0.1')
+  gem.add_runtime_dependency('regexp_parser', '~> 1.8')
 
   gem.add_development_dependency('parallel',   '~> 1.3')
   gem.add_development_dependency('rspec',      '~> 3.10')

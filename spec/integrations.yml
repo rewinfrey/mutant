@@ -7,6 +7,10 @@
   mutation_coverage: false
   mutation_generation: true
   exclude:
+    # TODO: Figure out if there is a better way to handle these
+    - core/matchdata/begin_spec.rb
+    - core/matchdata/end_spec.rb
+    # END TODO
     - command_line/fixtures/bad_syntax.rb
     - command_line/fixtures/freeze_flag_required_diff_enc.rb
     - core/file/stat_spec.rb

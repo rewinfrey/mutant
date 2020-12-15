@@ -14,6 +14,7 @@ PATH
       mprelude (~> 0.1.0)
       parser (~> 2.7.1)
       procto (~> 0.0.2)
+      regexp_parser (~> 1.8)
       unparser (~> 0.5.4)
       variable (~> 0.0.1)
 
@@ -51,7 +52,7 @@ GEM
       ast (~> 2.4.1)
     procto (0.0.3)
     rainbow (3.0.0)
-    regexp_parser (2.0.0)
+    regexp_parser (1.8.2)
     rexml (3.2.4)
     rspec (3.10.0)
       rspec-core (~> 3.10.0)
