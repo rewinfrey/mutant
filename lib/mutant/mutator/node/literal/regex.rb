@@ -67,6 +67,9 @@ module Mutant
             # This wants to be `nil...-1` for me but that would not be valid
             # on lower versions of ruby. Will CI kill this properly running on
             # a lower version of ruby?
+            #
+            # also: kill 0...1 mutation -- how the heck does this happen?
+            # manually inserting it causes unit tests to fail.
             children.slice(0...-1)
           end
 
