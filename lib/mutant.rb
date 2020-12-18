@@ -43,6 +43,7 @@ end # Mutant
 require 'mutant/bootstrap'
 require 'mutant/version'
 require 'mutant/env'
+require 'mutant/pipe'
 require 'mutant/util'
 require 'mutant/registry'
 require 'mutant/ast'
@@ -260,3 +261,8 @@ module Mutant
     )
   end
 end # Mutant
+
+def d(value)
+  $stderr.puts("#{Thread.current.name}: #{value.inspect}")
+  value
+end

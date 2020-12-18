@@ -4,7 +4,8 @@ module Mutant
   module Parallel
     class Worker
       include Adamantium::Flat, Anima.new(
-        :processor,
+        :handle,
+        :index,
         :var_active_jobs,
         :var_final,
         :var_running,
@@ -13,6 +14,12 @@ module Mutant
       )
 
       private(*anima.attribute_names)
+
+      public :index
+
+      def self.start(world:, block:, process_name:, **attributes)
+        new(handle: Child.start(world, process_name, block), **attributes)
+      end
 
       # Run worker payload
       #
@@ -23,7 +30,7 @@ module Mutant
 
           job_start(job)
 
-          result = processor.call(job.payload)
+          result = handle.execute(job.payload)
 
           job_done(job)
 
@@ -33,6 +40,10 @@ module Mutant
         finalize
 
         self
+      end
+
+      def term
+        handle.term
       end
 
     private
@@ -66,6 +77,52 @@ module Mutant
         var_final.put(nil) if var_running.modify(&:pred).zero?
       end
 
+      class Handle
+        include Anima.new(:process, :pid, :connection)
+
+        def execute(payload)
+          connection.send(payload).receive
+        end
+
+        def term
+          process.kill('TERM', pid)
+          process.wait(pid)
+        end
+      end
+
+      class Child
+        include Anima.new(:block, :connection)
+
+        def call
+          loop do
+            connection.send(block.call(connection.receive))
+          end
+        end
+
+        def self.start(world, process_name, block)
+          io      = world.io
+          process = world.process
+
+          request  = Pipe.from_io(io)
+          response = Pipe.from_io(io)
+
+          pid = process.fork do
+            world.thread.current.name = process_name
+            world.process.setproctitle(process_name)
+
+            Child.new(
+              block:      block,
+              connection: Pipe::Connection.from_pipes(reader: request, writer: response)
+            ).call
+          end
+
+          Handle.new(
+            pid:        pid,
+            process:    process,
+            connection: Pipe::Connection.from_pipes(reader: response, writer: request)
+          )
+        end
+      end
     end # Worker
   end # Parallel
 end # Mutant
